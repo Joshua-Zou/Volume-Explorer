@@ -19,5 +19,7 @@
         "files",
         "directories",
         "copy"
-    ]
+    ],
+    "homepage": "https://github.com/Joshua-Zou/volume-explorer",
+    "repository": "https://github.com/Joshua-Zou/volume-explorer"
 }
