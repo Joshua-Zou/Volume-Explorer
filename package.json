@@ -1,6 +1,6 @@
 {
     "name": "volume-explorer",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "An NPM package that allows you to explore files and directories in a docker volume",
     "main": "src/index.js",
     "private": false,
