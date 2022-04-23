@@ -134,6 +134,22 @@ module.exports = class Volume {
             throw ("Error: Could not copy directory! Check if the directory exists, if you have the permission to copy it, or if the destination is valid\n    " + err.toString())
         }
     }
+    /**
+     * @param {string} path - The path to the file to read
+     * @returns {Object}
+     * @description returns the stats of a file asynchronously (like fs.stat)
+     */
+    async stat(path) {
+        if (!path) throw ("Error: No path specified!")
+        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET");
+        mountpoint = mountpoint.Mountpoint.split("/")
+        let mountname = mountpoint.slice([mountpoint.length - 2]).join("/")
+        try {
+            return fs.statSync(`${this.volumePath}/${mountname}${path}`)
+        } catch (err) {
+            throw ("Error: Could not read file! Check if the file exists, or if you have the permission to read it.\n    " + err.toString())
+        }
+    }
 }
 function copyDirectory(source, destination, progressCallback) {
     if (!progressCallback) {
