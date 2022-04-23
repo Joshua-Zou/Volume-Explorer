@@ -1,6 +1,6 @@
 {
     "name": "volume-explorer",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "An NPM package that allows you to explore files and directories in a docker volume",
     "main": "src/index.js",
     "private": false,
@@ -21,5 +21,6 @@
         "copy"
     ],
     "homepage": "https://github.com/Joshua-Zou/volume-explorer",
-    "repository": "https://github.com/Joshua-Zou/volume-explorer"
+    "repository": "https://github.com/Joshua-Zou/volume-explorer",
+    "license": "MIT"
 }
