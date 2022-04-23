@@ -122,3 +122,12 @@ volume.copyDir("/", "./output", function(status) {
     console.log("Completed: ", status)
 })
 ```
+**.stat**
+Returns an object describing the file's metadata. Returns an fs.stat() object\
+Arguments:
+ - Path (required) - The path to the file
+ ```js
+ volume.stat("/myfile.txt").then(data => {
+    console.log(data)
+ })
+ ```
