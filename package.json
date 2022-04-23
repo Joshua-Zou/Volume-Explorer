@@ -1,0 +1,23 @@
+{
+    "name": "volume-explorer",
+    "version": "1.0.0",
+    "description": "An NPM package that allows you to explore files and directories in a docker volume",
+    "main": "src/index.js",
+    "private": false,
+    "scripts": {},
+    "dependencies": {
+        "node-fetch": "^2.6.7"
+    },
+    "engines": {
+        "node": ">= 6.0.0",
+        "npm": ">= 3.0.0"
+    },
+    "keywords": [
+        "docker",
+        "volume",
+        "explorer",
+        "files",
+        "directories",
+        "copy"
+    ]
+}
