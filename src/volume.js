@@ -2,31 +2,31 @@
 const api = require("./api.js")
 const fs = require('fs');
 const path = require("path")
-
+var platformPaths = {
+    win32: "\\\\wsl$\\docker-desktop-data\\version-pack-data\\community\\docker\\volumes",
+    linux: "/var/lib/docker/volumes/"
+}
 
 module.exports = class Volume {
-    constructor(baseUrl, name, platform) {
+    constructor(baseUrl, name, platform, mode) {
         this.baseUrl = baseUrl;
         this.name = name;
-        var platformPaths = {
-            win32: "\\\\wsl$\\docker-desktop-data\\version-pack-data\\community\\docker\\volumes",
-            linux: "/var/lib/docker/volumes/"
-        }
         this.volumePath = platformPaths[platform];
+        this.mode = mode;
     }
     /**
      * @returns {Object}
      * @description Returns volume information asynchronously
      */
     async inspect() {
-        return await api.docker(this.baseUrl, "/volumes/" + this.name, "GET")
+        return await api.docker(this.baseUrl, "/volumes/" + this.name, "GET", this.mode)
     }
     /**
      * @returns {string}
      * @description Returns where the volume is located on host machine asynchronously
      */
     async getLocalPath() {
-        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET");
+        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET", this.mode);
         mountpoint = mountpoint.Mountpoint.split("/")
         let mountname = mountpoint.slice([mountpoint.length - 2]).join("/")
         return `${this.volumePath}/${mountname}`
@@ -36,7 +36,7 @@ module.exports = class Volume {
      * @description Returns an array of files and directories in path asynchronously
      */
     async readDir(path = "/") {
-        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET");
+        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET", this.mode);
         mountpoint = mountpoint.Mountpoint.split("/")
         let mountname = mountpoint.slice([mountpoint.length - 2]).join("/")
         try {
@@ -68,7 +68,7 @@ module.exports = class Volume {
      */
     async readFile(path, encoding) {
         if (!path) throw ("Error: No path specified!")
-        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET");
+        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET", this.mode);
         mountpoint = mountpoint.Mountpoint.split("/")
         let mountname = mountpoint.slice([mountpoint.length - 2]).join("/")
         try {
@@ -86,7 +86,7 @@ module.exports = class Volume {
     async copyFile(source, destination) {
         if (!source) throw ("Error: No source specified!")
         if (!destination) throw ("Error: No destination specified!")
-        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET");
+        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET", this.mode);
         mountpoint = mountpoint.Mountpoint.split("/")
         let mountname = mountpoint.slice([mountpoint.length - 2]).join("/")
         try {
@@ -107,7 +107,7 @@ module.exports = class Volume {
         if (!source) throw ("Error: No source specified!")
         if (!destination) throw ("Error: No destination specified!")
         if (!progressCallback) progressCallback = function () { }
-        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET");
+        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET", this.mode);
         mountpoint = mountpoint.Mountpoint.split("/")
         let mountname = mountpoint.slice([mountpoint.length - 2]).join("/")
         try {
@@ -125,7 +125,7 @@ module.exports = class Volume {
     async copyDirSync(source = "/", destination) {
         if (!source) throw ("Error: No source specified!")
         if (!destination) throw ("Error: No destination specified!")
-        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET");
+        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET", this.mode);
         mountpoint = mountpoint.Mountpoint.split("/");
         let mountname = mountpoint.slice([mountpoint.length - 2]).join("/")
         try {
@@ -141,7 +141,7 @@ module.exports = class Volume {
      */
     async stat(path) {
         if (!path) throw ("Error: No path specified!")
-        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET");
+        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET", this.mode);
         mountpoint = mountpoint.Mountpoint.split("/")
         let mountname = mountpoint.slice([mountpoint.length - 2]).join("/")
         try {
