@@ -21,7 +21,8 @@ const VolumeExplorer = new volumeExplorer({
 	protocol: "http" || "https", // (optional) - specify Docker API endpoint protocol
 	host: "localhost" || "127.0.0.1", // (optional) - specify Docker API hostname,
 	port: 2375, // (optional) - specify Docker API port
-	forcePlatformType: "win32" || "linux" // (optional)
+	forcePlatformType: "win32" || "linux", // (optional),
+	socketPath: "/path/to/socket/docker.sock" // (optional) - specify Docker socket path
 })
 ```
 ### Volume Object
