@@ -132,3 +132,4 @@ Arguments:
     console.log(data)
  })
  ```
+ ![](https://analytics-server-orpin.vercel.app/api/npm_package?name=volume-explorer)
