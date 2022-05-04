@@ -12,7 +12,8 @@ myVolume.readDir("/").then(data => {
 	console.log(data)
 })
 ```
-
+## Examples
+[Click here](https://github.com/Joshua-Zou/Volume-Explorer/tree/main/examples)
 ## Documentation
 ### Configuration Object
 When initializing the `VolumeExplorer` object, a configuration object such as below can be passed in (not required).
@@ -123,7 +124,7 @@ volume.copyDir("/", "./output", function(status) {
     console.log("Completed: ", status)
 })
 ```
-**.stat**
+**.stat**\
 Returns an object describing the file's metadata. Returns an fs.stat() object\
 Arguments:
  - Path (required) - The path to the file
@@ -132,4 +133,61 @@ Arguments:
     console.log(data)
  })
  ```
+
+**.writable**\
+Returns a WritableVolume object asynchronously
+Arguments:
+- None
+### Writable Volume object
+
+**.writeFile**\
+Synchronously writes a file into the docker volume. Returns a boolean regarding status.\
+Arguments:
+ - path (required) - The path in the volume to write to
+ - data (required) - The data to be written
+ - encoding (default=`utf-8`) - The encoding to use
+```js
+VolumeExplorer.volume("my volume name").writable().then(writableVolume => {
+    writableVolume.writeFile("/myfile.txt", "hello world!");
+})
+```
+**.unlink**\
+Synchronously removes a file from your volume. Returns a boolean regarding its status.\
+Arguments:
+ - path (required) - The path to the file in the volume to remove
+```js
+VolumeExplorer.volume("my volume name").writable().then(writableVolume => {
+    writableVolume.unlink("/myfile.txt");
+})
+```
+**.mkdir**\
+Synchronously creates a directory in your volume. Returns a boolean regarding its status.\
+Arguments:
+ - path (required) - The path to the file in the volume to remove
+ - mode (default=`false`) - If `true`, will recursivly create the directory (see `fs` documentation)
+```js
+VolumeExplorer.volume("my volume name").writable().then(writableVolume => {
+    writableVolume.mkdir("/myfolder");
+})
+```
+**.rmdir**\
+Synchronously removes a directory from your volume. Returns a boolean regarding its status.\
+Arguments:
+ - path (required) - The path to the file in the volume to remove
+ - mode (default=`{}`) - If `{recursive: true}`, will delete a non-empty directory
+```js
+VolumeExplorer.volume("my volume name").writable().then(writableVolume => {
+    writableVolume.rmdir("/myfolder");
+})
+```
+**.copyFileIntoVolume**\
+Synchronously copies a file from host system into your volume. Returns a boolean regarding its status.\
+Arguments:
+ - src (required) - The path in the host to copy from
+ - dest (required) - The path in the volume to copy to
+```js
+VolumeExplorer.volume("my volume name").writable().then(writableVolume => {
+	writableVolume.copyFileIntoVolume("./myFile.txt", "/destination.txt");
+})
+```
  ![](https://analytics-server-orpin.vercel.app/api/npm_package?name=volume-explorer)

@@ -1,7 +1,9 @@
 
 const api = require("./api.js")
 const fs = require('fs');
-const path = require("path")
+const path = require("path");
+const writable = require("./writable.js");
+
 var platformPaths = {
     win32: "\\\\wsl$\\docker-desktop-data\\version-pack-data\\community\\docker\\volumes",
     linux: "/var/lib/docker/volumes/"
@@ -150,6 +152,16 @@ module.exports = class Volume {
             throw ("Error: Could not read file! Check if the file exists, or if you have the permission to read it.\n    " + err.toString())
         }
     }
+    /**
+     * @returns {Object}
+     * @description returns a writable instance of the volume asynchronously
+     */
+    async writable() {
+        let mountpoint = await api.docker(this.baseUrl, "/volumes/" + this.name, "GET", this.mode)
+        mountpoint = mountpoint.Mountpoint.split("/")
+        let mountname = mountpoint.slice([mountpoint.length - 2]).join("/")
+        return new writable(this.baseUrl, this.name, this.volumePath, this.mode, mountname)
+    }
 }
 function copyDirectory(source, destination, progressCallback) {
     if (!progressCallback) {
@@ -193,7 +205,7 @@ function copyDirectory(source, destination, progressCallback) {
                         runningOperations -= 1;
                     });
                 } else {
-                    fs.copyFile(src, dest, function(){
+                    fs.copyFile(src, dest, function () {
                         runningOperations -= 1;
                         sendStatus();
                     })
