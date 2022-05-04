@@ -1,4 +1,14 @@
 # Docker Volume Explorer
+
+## Table of Contents
+- [About](#about)
+- [Quickstart](#quickstart)
+- [Examples](#examples)
+- [Documentation](#documentation)
+  * [Configuration Object](#configuration-object)
+  * [Volume Object](#volume-object)
+  * [Writable Volume object](#writable-volume-object)
+
 ## About
 Docker Volume Explorer allows you to easily interact with Docker volumes in Windows and Linux systems (Macos support coming soon). You can read, copy, and list all files inside of the volume.
 ## Quickstart
